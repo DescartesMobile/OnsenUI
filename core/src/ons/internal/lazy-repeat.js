@@ -235,6 +235,23 @@ export class LazyRepeatProvider {
     });
   }
 
+  setup() {
+    if (this._isRefreshing === true) {
+      return;
+    }
+
+    this._isRefreshing = true;
+    this._removeAllElements();
+    this.padding = 0;
+
+    this._render({
+      forceScrollDown: true,
+      scrollDownCallback: () => {
+        this._isRefreshing = false;
+      }
+    });
+  }
+
   _render({forceScrollDown = false, forceStartIndex, scrollDownCallback = () => {}} = {}) {
     const isScrollUp = !forceScrollDown && this.lastScrollTop > this._pageContent.scrollTop;
     this.lastScrollTop = this._pageContent.scrollTop;

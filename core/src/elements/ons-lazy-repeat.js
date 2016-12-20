@@ -168,6 +168,10 @@ export default class LazyRepeatElement extends BaseElement {
     this._lazyRepeatProvider && this._lazyRepeatProvider.refresh(index);
   }
 
+  setup() {
+    this._lazyRepeatProvider && this._lazyRepeatProvider.setup();
+  }
+
   attributeChangedCallback(name, last, current) {}
 
   disconnectedCallback() {
