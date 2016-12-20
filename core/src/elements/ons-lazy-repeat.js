@@ -164,8 +164,8 @@ export default class LazyRepeatElement extends BaseElement {
    *   [en]Refresh the list. Use this method when the data has changed.[/en]
    *   [ja]リストを更新します。もしデータが変わった場合にはこのメソッドを使ってください。[/ja]
    */
-  refresh() {
-    this._lazyRepeatProvider && this._lazyRepeatProvider.refresh();
+  refresh(index) {
+    this._lazyRepeatProvider && this._lazyRepeatProvider.refresh(index);
   }
 
   attributeChangedCallback(name, last, current) {}

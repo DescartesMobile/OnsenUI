@@ -190,10 +190,32 @@ export class LazyRepeatProvider {
   }
 
   _onChange() {
-    this._render();
+    if (!this._isRefreshing) {
+      this._render();
+    }
   }
 
-  refresh() {
+  refresh(index) {
+    if (index === undefined) {
+      return this.refreshAll();
+    }
+
+    if (!this._renderedItems.hasOwnProperty(index)) {
+      return;
+    }
+
+    this._delegate.loadItemElement(index, item => {
+      this._wrapperElement.insertBefore(item.element, this._renderedItems[index].element);
+      this._removeElement(index, true);
+      setImmediate(() => {
+        this._topPositions[index + 1] = this._topPositions[index] + item.element.offsetHeight;
+
+        this._renderedItems[index] = item;
+      });
+    });
+  }
+
+  refreshAll() {
     if (this._isRefreshing) {
       return;
     }
@@ -203,7 +225,6 @@ export class LazyRepeatProvider {
     this._wrapperElement.style.height = this._topPositions[firstItemIndex] + this._calculateRenderedHeight() + 'px';
 
     this._removeAllElements();
-    const deferred = util.defer();
     this._render({
       forceScrollDown: true,
       forceStartIndex: firstItemIndex,
