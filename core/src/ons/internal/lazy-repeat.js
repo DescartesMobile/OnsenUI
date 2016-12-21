@@ -124,12 +124,7 @@ export class LazyRepeatProvider {
 
     this._wrapperElement = wrapperElement;
     this._delegate = delegate;
-    if (!this._wrapperElement.children[0] || this._wrapperElement.children[0].tagName !== 'ONS-LAZY-REPEAT') {
-      this._wrapperElement.insertBefore(document.createElement('span'), this._wrapperElement.children[0]);
-    }
-    this._paddingElement = wrapperElement.children[0];
-    this._paddingElement.style.display = 'block';
-    this._paddingElement.style.height = 0;
+    this._insertIndex = (this._wrapperElement.children[0] && this._wrapperElement.children[0].tagName === 'ONS-LAZY-REPEAT') ? 1 : 0;
 
     if (wrapperElement.tagName.toLowerCase() === 'ons-list') {
       wrapperElement.classList.add('lazy-list');
@@ -156,11 +151,11 @@ export class LazyRepeatProvider {
   }
 
   get padding() {
-    return parseInt(this._paddingElement.style.height, 10);
+    return parseInt(this._wrapperElement.style.paddingTop, 10);
   }
 
   set padding(newValue) {
-    this._paddingElement.style.height = newValue + 'px';
+    this._wrapperElement.style.paddingTop = newValue + 'px';
   }
 
   _findPageContentElement(wrapperElement) {
@@ -369,7 +364,7 @@ export class LazyRepeatProvider {
     }
 
     this._delegate.loadItemElement(index, item => {
-      this._wrapperElement.insertBefore(item.element, this._wrapperElement.children[1])
+      this._wrapperElement.insertBefore(item.element, this._wrapperElement.children[this._insertIndex])
       this.padding = this._topPositions[index];
       this._renderedItems[index] = item;
     });
