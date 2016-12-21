@@ -18,7 +18,7 @@ limitations under the License.
 (function(){
   'use strict';
 
-  angular.module('onsen').factory('AngularLazyRepeatDelegate', function($compile) {
+  angular.module('onsen').factory('AngularLazyRepeatDelegate', function($compile, $q) {
 
     const directiveAttributes = ['ons-lazy-repeat', 'ons:lazy:repeat', 'ons_lazy_repeat', 'data-ons-lazy-repeat', 'x-ons-lazy-repeat'];
     class AngularLazyRepeatDelegate extends ons._internal.LazyRepeatDelegate {
@@ -57,6 +57,10 @@ limitations under the License.
         }
 
         throw new Error('`lazy-repeat` delegate object is vague.');
+      }
+
+      promiseWrapper(fn) {
+        return $q(fn);
       }
 
       loadItemElement(index, done) {

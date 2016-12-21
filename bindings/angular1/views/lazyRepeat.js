@@ -42,13 +42,12 @@ limitations under the License.
         var internalDelegate = new AngularLazyRepeatDelegate(userDelegate, element[0], element.scope());
 
         this._provider = new ons._internal.LazyRepeatProvider(element[0].parentNode, internalDelegate);
+        element.remove();
 
         // Expose methods to user.
         userDelegate.refresh = this._provider.refresh.bind(this._provider);
         userDelegate.setup = this._provider.setup.bind(this._provider);
         userDelegate.ready = this._provider.ready;
-
-        element.remove();
 
         // Render when number of items change.
         this._scope.$watch(internalDelegate.countItems.bind(internalDelegate), this._provider._onChange.bind(this._provider));

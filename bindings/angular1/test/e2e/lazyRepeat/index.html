@@ -23,9 +23,6 @@
           configureItemScope: function(index, scope) {
             scope.number = $scope.items[index];
           },
-          calculateItemHeight: function() {
-            return 45;
-          },
           countItems: function() {
             return $scope.items.length;
           }
@@ -47,7 +44,7 @@
         <ons-list-item modifier="tappable" ons-lazy-repeat="Delegate">
           <div ng-click="click($event)" id="item-{{number}}">
             <span id="item-{{number}}-text">Item #{{number}}</span>
-            <ons-button id="remove-{{ number }}" ng-click="items.splice($index, 1)">Remove</ons-button>
+            <ons-button id="remove-{{ number }}" ng-click="items.splice($index, 1); Delegate.refresh()">Remove</ons-button>
           </div>
         </ons-list-item>
       </ons-list>

@@ -148,6 +148,10 @@ export class LazyRepeatProvider {
     this._renderQueue = [];
 
     this._addEventListeners();
+
+    // Fix $digest cycle for Angular1 during the first setup
+    this.promiseWrapper = this._delegate.promiseWrapper || (fn => new Promise(fn));
+
     this.ready = this.setup();
   }
 
@@ -214,6 +218,7 @@ export class LazyRepeatProvider {
           this._topPositions[index + 1] = this._topPositions[index] + item.element.offsetHeight;
 
           this._renderedItems[index] = item;
+          this._renderedItems[index].isRefreshing = false;
           resolve(item.element);
         });
       });
@@ -257,7 +262,7 @@ export class LazyRepeatProvider {
     this._removeAllElements();
     this.padding = 0;
 
-    return new Promise(resolve => {
+    return this.promiseWrapper(resolve => {
       this._render({
         forceScrollDown: true,
         scrollDownCallback: () => {
@@ -310,8 +315,14 @@ export class LazyRepeatProvider {
 
           scrollDownCallback();
         })
-        .catch(() => scrollDownCallback())
-      );
+        .catch((value) => {
+          if (value === 0) {
+            scrollDownCallback();
+          } else {
+            throw Error(value);
+          }
+        }
+      ));
     }
   }
 
@@ -364,7 +375,6 @@ export class LazyRepeatProvider {
     });
   }
 
-
   /**
    * @param {Object} item
    * @param {Number} item.index
@@ -376,7 +386,7 @@ export class LazyRepeatProvider {
       return Promise.resolve(this._topPositions[index + 1]);
     }
 
-    return new Promise((resolve, reject) => {
+    return this.promiseWrapper((resolve, reject) => {
       this._delegate.loadItemElement(index, item => {
         this._wrapperElement.appendChild(item.element);
         setImmediate(() => {
@@ -385,8 +395,9 @@ export class LazyRepeatProvider {
             item.element.remove();
 
             delete item.element;
-            return reject();
+            return reject(0);
           }
+
           this._topPositions[index + 1] = this._topPositions[index] + item.element.offsetHeight;
 
           this._renderedItems[index] = item;

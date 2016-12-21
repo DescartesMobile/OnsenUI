@@ -50,6 +50,7 @@
 
     it('should be possible to remove items from the list', function() {
       var secondElement = element(by.id('item-2'));
+      browser.wait(EC.visibilityOf(secondElement));
 
       expect(secondElement.isDisplayed()).toBeTruthy();
 
