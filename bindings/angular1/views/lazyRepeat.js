@@ -43,8 +43,10 @@ limitations under the License.
 
         this._provider = new ons._internal.LazyRepeatProvider(element[0].parentNode, internalDelegate);
 
-        // Expose refresh method to user.
+        // Expose methods to user.
         userDelegate.refresh = this._provider.refresh.bind(this._provider);
+        userDelegate.setup = this._provider.setup.bind(this._provider);
+        userDelegate.ready = this._provider.ready;
 
         element.remove();
 

@@ -160,16 +160,24 @@ export default class LazyRepeatElement extends BaseElement {
   /**
    * @method refresh
    * @signature refresh()
+   * @parameter index Optional index to refresh a single item. If it is not provided all the rendered portion of the list will be refreshed.
    * @description
-   *   [en]Refresh the list. Use this method when the data has changed.[/en]
+   *   [en]Refresh the current rendered list. Use this method when the current data has changed.[/en]
    *   [ja]リストを更新します。もしデータが変わった場合にはこのメソッドを使ってください。[/ja]
    */
   refresh(index) {
-    this._lazyRepeatProvider && this._lazyRepeatProvider.refresh(index);
+    return this._lazyRepeatProvider && this._lazyRepeatProvider.refresh(index);
   }
 
+  /**
+   * @method setup
+   * @signature setup()
+   * @description
+   *   [en]Setup the list again. Use this method when all the data has changed. Scroll is set to the top.[/en]
+   *   [ja][/ja]
+   */
   setup() {
-    this._lazyRepeatProvider && this._lazyRepeatProvider.setup();
+    return this._lazyRepeatProvider && this._lazyRepeatProvider.setup();
   }
 
   attributeChangedCallback(name, last, current) {}

@@ -148,7 +148,7 @@ export class LazyRepeatProvider {
     this._renderQueue = [];
 
     this._addEventListeners();
-    this._render();
+    this.ready = this.setup();
   }
 
   get padding() {
@@ -200,24 +200,33 @@ export class LazyRepeatProvider {
       return this.refreshAll();
     }
 
-    if (!this._renderedItems.hasOwnProperty(index)) {
-      return;
+    if (!this._renderedItems.hasOwnProperty(index) || this._renderedItems[index].isRefreshing === true) {
+      return Promise.reject('Item is not rendered or is already refreshing');
     }
 
-    this._delegate.loadItemElement(index, item => {
-      this._wrapperElement.insertBefore(item.element, this._renderedItems[index].element);
-      this._removeElement(index, true);
-      setImmediate(() => {
-        this._topPositions[index + 1] = this._topPositions[index] + item.element.offsetHeight;
+    this._renderedItems[index].isRefreshing = true;
 
-        this._renderedItems[index] = item;
+    return new Promise(resolve => {
+      this._delegate.loadItemElement(index, item => {
+        this._wrapperElement.insertBefore(item.element, this._renderedItems[index].element);
+        this._removeElement(index, true);
+        setImmediate(() => {
+          this._topPositions[index + 1] = this._topPositions[index] + item.element.offsetHeight;
+
+          this._renderedItems[index] = item;
+          resolve(item.element);
+        });
       });
     });
   }
 
   refreshAll() {
     if (this._isRefreshing) {
-      return;
+      return Promise.reject('Already refreshing.');
+    }
+
+    if (this._countItems() === 0) {
+      return Promise.resolve();
     }
 
     this._isRefreshing = true;
@@ -225,41 +234,48 @@ export class LazyRepeatProvider {
     this._wrapperElement.style.height = this._topPositions[firstItemIndex] + this._calculateRenderedHeight() + 'px';
 
     this._removeAllElements();
-    this._render({
-      forceScrollDown: true,
-      forceStartIndex: firstItemIndex,
-      scrollDownCallback: () => {
-        this._wrapperElement.style.height = 'inherit';
-        this._isRefreshing = false;
-      }
+
+    return new Promise(resolve => {
+      this._render({
+        forceScrollDown: true,
+        forceStartIndex: firstItemIndex,
+        scrollDownCallback: () => {
+          this._wrapperElement.style.height = 'inherit';
+          this._isRefreshing = false;
+          resolve();
+        }
+      });
     });
   }
 
   setup() {
     if (this._isRefreshing === true) {
-      return;
+      return Promise.reject('Already refreshing.');
     }
 
     this._isRefreshing = true;
     this._removeAllElements();
     this.padding = 0;
 
-    this._render({
-      forceScrollDown: true,
-      scrollDownCallback: () => {
-        this._isRefreshing = false;
-      }
+    return new Promise(resolve => {
+      this._render({
+        forceScrollDown: true,
+        scrollDownCallback: () => {
+          this._isRefreshing = false;
+          resolve();
+        }
+      });
     });
   }
 
   _render({forceScrollDown = false, forceStartIndex, scrollDownCallback = () => {}} = {}) {
-    const isScrollUp = !forceScrollDown && this.lastScrollTop > this._pageContent.scrollTop;
-    this.lastScrollTop = this._pageContent.scrollTop;
-    const keep = {};
-
     const offset = this._wrapperElement.getBoundingClientRect().top;
     const limit = 4 * window.innerHeight - offset;
     const count = this._countItems();
+
+    const keep = {};
+    const isScrollUp = !forceScrollDown && this.lastScrollTop > this._pageContent.scrollTop;
+    this.lastScrollTop = this._pageContent.scrollTop;
 
     if (isScrollUp) {
       const firstIndex = Math.max(0, this._calculateStartIndex(offset) - 30);
@@ -271,10 +287,6 @@ export class LazyRepeatProvider {
         this._renderElement(i);
         keep[i] = true;
       }
-      // if (this._delegate.hasRenderFunction && this._delegate.hasRenderFunction()) {
-      //   this._delegate._render(items, this._listHeight);
-      //   return null;
-      // }
 
       Object.keys(this._renderedItems).forEach(key => {
         if (!keep[key]) {
@@ -298,7 +310,7 @@ export class LazyRepeatProvider {
 
           scrollDownCallback();
         })
-        .catch(() => {})
+        .catch(() => scrollDownCallback())
       );
     }
   }
@@ -309,21 +321,21 @@ export class LazyRepeatProvider {
         this._topPositions.length += 100;
       }
       return this._renderElementAsync(i, id)
-      .then(newTopPosition => newTopPosition > limit ? i : this._asyncLoop(++i, id, count, limit));
+      .then(newTopPosition => newTopPosition > limit ? Promise.resolve(i) : this._asyncLoop(++i, id, count, limit));
     } else {
-      return i;
+      return Promise.resolve(i);
     }
   }
 
   _runRenderQueue(newRender) { // FIFO
-    if (newRender) {
+    if (newRender && this._renderQueue) {
       newRender._id = + new Date();
       this._renderQueue.push(newRender);
     }
     if (!newRender || this._renderQueue.length === 1) {
       const tmpId = this._renderQueue[0]._id;
       this._renderQueue[0](tmpId).then(() => {
-        if (this._renderQueue.length === 0 || this._renderQueue[0]._id !== tmpId) {
+        if (!this._renderQueue || this._renderQueue.length === 0 || this._renderQueue[0]._id !== tmpId) {
           return;
         }
         this._renderQueue.shift();
@@ -368,9 +380,10 @@ export class LazyRepeatProvider {
       this._delegate.loadItemElement(index, item => {
         this._wrapperElement.appendChild(item.element);
         setImmediate(() => {
-          if (this._renderQueue.length === 0 || this._renderQueue[0]._id !== id) {
-            this._delegate.destroyItem(index, item);
+          if (!this._renderQueue || this._renderQueue.length === 0 || this._renderQueue[0]._id !== id) {
+            this._delegate && this._delegate.destroyItem(index, item);
             item.element.remove();
+
             delete item.element;
             return reject();
           }
@@ -479,7 +492,7 @@ export class LazyRepeatProvider {
   destroy() {
     this._removeAllElements();
     this._delegate.destroy();
-    this._parentElement = this._delegate = this._renderedItems = null;
+    this._parentElement = this._delegate = this._renderQueue = this._renderedItems = null;
     this._removeEventListeners();
   }
 }

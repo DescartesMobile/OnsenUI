@@ -4,7 +4,7 @@ onlyChrome(describe)('OnsLazyRepeatElement', () => {
   let element;
   let lazyRepeat;
 
-  beforeEach(() => {
+  beforeEach((done) => {
     element = ons._util.createElement(`
       <ons-page>
         <ons-toolbar>
@@ -22,8 +22,6 @@ onlyChrome(describe)('OnsLazyRepeatElement', () => {
     lazyRepeat = document.querySelector('#my-lazy-repeat');
 
     lazyRepeat.delegate = {
-      calculateItemHeight: (i) => 44,
-
       createItemContent: (i, template) => {
         var dom = template.cloneNode(true);
         dom.innerText = i;
@@ -33,6 +31,8 @@ onlyChrome(describe)('OnsLazyRepeatElement', () => {
 
       countItems: () => 10000000
     };
+
+    lazyRepeat._lazyRepeatProvider.ready.then(done);
   });
 
   afterEach(() => {
@@ -45,8 +45,8 @@ onlyChrome(describe)('OnsLazyRepeatElement', () => {
   });
 
   describe('#refresh', () => {
-    it('should be callable', () => {
-      lazyRepeat.refresh();
+    it('should be callable', (done) => {
+      lazyRepeat.refresh().then(done);
     });
   });
 
@@ -54,7 +54,6 @@ onlyChrome(describe)('OnsLazyRepeatElement', () => {
     it('should accept delegate object twice', () => {
       lazyRepeat.delegate = {
         countItems: () => 42,
-        calculateItemHeight: i => 42,
         createItemContent: i => document.createElement('div')
       };
     });

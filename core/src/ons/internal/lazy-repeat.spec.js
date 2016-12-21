@@ -46,12 +46,6 @@ describe('LazyRepeatDelegate', () => {
     });
   });
 
-  describe('#calculateItemHeight()', () => {
-    it('should return zero on undefined userDelegate.calculateItemHeight()', () => {
-      expect(delegate.calculateItemHeight()).to.equal(0);
-    });
-  });
-
   describe('#updateItem()', () => {
     it('doesn\'t throw an error', () => {
       expect(() => delegate.updateItem()).to.not.throw(Error);
@@ -74,11 +68,10 @@ describe('LazyRepeatDelegate', () => {
 onlyChrome(describe)('LazyRepeatProvider', () => {
   let delegate, template, page, wrapper, provider;
 
-  beforeEach(() => {
+  beforeEach((done) => {
     delegate = new LazyRepeatDelegate({
       createItemContent: i => ons._util.createElement(`<ons-list-item>Item ${i}</ons-list-item>`),
-      countItems: () => 1000,
-      calculateItemHeight: () => 44
+      countItems: () => 1000
     });
 
     page = ons._util.createElement(`
@@ -92,6 +85,7 @@ onlyChrome(describe)('LazyRepeatProvider', () => {
     document.body.appendChild(page);
 
     provider = new LazyRepeatProvider(wrapper, delegate);
+    provider.ready.then(done);
   });
 
   afterEach(() => {
@@ -141,23 +135,45 @@ onlyChrome(describe)('LazyRepeatProvider', () => {
   });
 
   describe('#_render()', () => {
-    it('removes items that are not in view', () => {
+    it('removes items that are not in view', (done) => {
       expect(provider._renderedItems.hasOwnProperty(0)).to.be.true;
-
       const pageContent = page.querySelector('.page__content');
       pageContent.scrollTop = 10000;
-      provider._render();
-      pageContent.scrollTop = 10000;
-      provider._render();
-      expect(provider._renderedItems.hasOwnProperty(0)).to.be.false;
+      return provider.refresh().then(() => {
+        pageContent.scrollTop = 10000;
+        provider.refresh().then(() => {
+          expect(provider._renderedItems.hasOwnProperty(0)).to.be.false;
+          done();
+        });
+      });
+    });
+  });
+
+  describe('#refresh()', () => {
+    it('Throws error if already running', () => {
+      let deferred = ons._util.defer();
+      provider.setup().then(() => deferred.resolve());
+      return expect(provider.refresh()).to.eventually.be.rejected.then(() => deferred.promise);
+    });
+
+    it('Becomes refreshable again', () => {
+      return provider.setup().then(() => {
+        return expect(provider.refresh()).to.eventually.be.fulfilled;
+      });
     });
   });
 
   describe('#_renderElement()', () => {
-    it('calls \'updateItem()\' if it is already rendered', () => {
+    it('calls \'updateItem()\' if it is already rendered', (done) => {
       const spy = chai.spy.on(delegate, 'updateItem');
-      provider._renderElement({index: 0, top: 0});
-      expect(spy).to.have.been.called.once;
+      const spy2 = chai.spy.on(delegate, 'loadItemElement');
+      page.querySelector('.page__content').scrollTop = 1;
+
+      provider._render({scrollDownCallback: () => {
+        expect(spy).to.have.been.called();
+        expect(spy2).to.not.have.been.called();
+        done();
+      }});
     });
 
     it('calls \'loadItemElement()\' if it is not already rendered', () => {
