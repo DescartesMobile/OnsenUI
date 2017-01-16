@@ -4769,6 +4769,7 @@ input[type="search"].search-input::-webkit-search-cancel-button {
   -webkit-border-radius: 0;
   border-radius: 0;
   height: 24px;
+  vertical-align: middle;
   -webkit-transform: translate3d(0, 0, 0);
 }
 .text-input--material__label {
@@ -4828,6 +4829,48 @@ input[type="search"].search-input::-webkit-search-cancel-button {
 .text-input--material::-ms-clear {
   display: none;
 }
+/* topdoc
+  name: Transparent Text Input
+  class: text-input--transparent
+  markup:
+    <input type="text" class="text-input--transparent" placeholder="text" value="">
+    <br>
+    <input type="text" class="text-input--transparent" placeholder="text" value="" disabled>
+*/
+.text-input--transparent {
+  border: none;
+  background-color: transparent;
+  background-image: none;
+  padding-left: 0;
+  padding-right: 0;
+}
+.text-input--transparent:focus {
+  background-image: none;
+}
+.text-input--transparent:disabled {
+  border: none;
+  background-color: transparent;
+}
+.text-input--transparent:disabled::-webkit-input-placeholder {
+  border: none;
+  background-color: transparent;
+}
+.text-input--transparent:disabled::-moz-placeholder {
+  border: none;
+  background-color: transparent;
+}
+.text-input--transparent:disabled::-ms-input-placeholder {
+  border: none;
+  background-color: transparent;
+}
+.text-input--transparent:disabled:-ms-input-placeholder {
+  border: none;
+  background-color: transparent;
+}
+.text-input--transparent:invalid {
+  border: none;
+  background-color: transparent;
+}
 @-moz-keyframes material-text-input-animate {
   0% {
     background-size: 0% 2px, 100% 2px;
@@ -4855,6 +4898,350 @@ input[type="search"].search-input::-webkit-search-cancel-button {
   }
 }
 @keyframes material-text-input-animate {
+  0% {
+    -webkit-background-size: 0% 2px, 100% 2px;
+    background-size: 0% 2px, 100% 2px;
+  }
+  100% {
+    -webkit-background-size: 100% 2px, 100% 2px;
+    background-size: 100% 2px, 100% 2px;
+  }
+}
+/* topdoc
+  name: Select Input
+  class: select-input
+  modifiers:
+    :disabled: Disabled state
+    :focus: Focused
+    :invalid: Hover state
+  markup:
+    <select class="select-input">
+      <option>Option 1</option>
+      <option>Option 2</option>
+      <option>Option 3</option>
+    </select>
+*/
+.select-input {
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: none;
+  line-height: normal;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  vertical-align: top;
+  outline: none;
+  line-height: 1;
+  font-family: -apple-system, 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  font-size: 17px;
+  border: none;
+  background-color: transparent;
+  position: relative;
+  letter-spacing: 0;
+  -webkit-box-shadow: var-box-shadow--select-input;
+  box-shadow: var-box-shadow--select-input;
+  color: #1f1f21;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  font-size: 15px;
+  height: 31px;
+  font-weight: 400;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.select-input::-webkit-input-placeholder {
+  color: #999;
+}
+.select-input::-moz-placeholder {
+  color: #999;
+}
+.select-input::-ms-input-placeholder {
+  color: #999;
+}
+.select-input:-ms-input-placeholder {
+  color: #999;
+}
+.select-input:disabled {
+  opacity: 0.3;
+  cursor: default;
+  pointer-events: none;
+  border: none;
+  background-color: transparent;
+}
+.select-input:disabled::-webkit-input-placeholder {
+  border: none;
+  background-color: transparent;
+  color: #999;
+}
+.select-input:disabled::-moz-placeholder {
+  border: none;
+  background-color: transparent;
+  color: #999;
+}
+.select-input:disabled::-ms-input-placeholder {
+  border: none;
+  background-color: transparent;
+  color: #999;
+}
+.select-input:disabled:-ms-input-placeholder {
+  border: none;
+  background-color: transparent;
+  color: #999;
+}
+.select-input::-ms-clear {
+  display: none;
+}
+.select-input:invalid {
+  border: none;
+  background-color: transparent;
+  color: #1f1f21;
+}
+/* topdoc
+  name: Underbar Select Input
+  class: select-input--underbar
+  markup:
+    <select class="select-input select-input--underbar">
+      <option>Option 1</option>
+      <option>Option 2</option>
+      <option>Option 3</option>
+    </select>
+*/
+.select-input--underbar {
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: none;
+  line-height: normal;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  vertical-align: top;
+  outline: none;
+  line-height: 1;
+  font-family: -apple-system, 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  font-size: 17px;
+  border: none;
+  background-color: transparent;
+  position: relative;
+  letter-spacing: 0;
+  -webkit-box-shadow: var-box-shadow--select-input;
+  box-shadow: var-box-shadow--select-input;
+  color: #1f1f21;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  font-size: 15px;
+  height: 31px;
+  font-weight: 400;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  border: none;
+  background-color: transparent;
+  border-bottom: 1px solid #ddd;
+  -webkit-border-radius: 0px;
+  border-radius: 0px;
+}
+.select-input--underbar:disabled {
+  opacity: 0.3;
+  cursor: default;
+  pointer-events: none;
+  border: none;
+  background-color: transparent;
+  border: none;
+  background-color: transparent;
+  border-bottom: 1px solid #ddd;
+}
+.select-input--underbar:disabled::-webkit-input-placeholder {
+  border: none;
+  background-color: transparent;
+  color: #999;
+  border: none;
+  background-color: transparent;
+}
+.select-input--underbar:disabled::-moz-placeholder {
+  border: none;
+  background-color: transparent;
+  color: #999;
+  border: none;
+  background-color: transparent;
+}
+.select-input--underbar:disabled::-ms-input-placeholder {
+  border: none;
+  background-color: transparent;
+  color: #999;
+  border: none;
+  background-color: transparent;
+}
+.select-input--underbar:disabled:-ms-input-placeholder {
+  border: none;
+  background-color: transparent;
+  color: #999;
+  border: none;
+  background-color: transparent;
+}
+.select-input--underbar:invalid {
+  border: none;
+  background-color: transparent;
+  color: #1f1f21;
+  border: none;
+  background-color: transparent;
+  border-bottom: 1px solid #ddd;
+}
+/* topdoc
+  name: Material Select Input
+  class: select-input--material
+  markup:
+    <select class="select-input select-input--material">
+      <option>Option 1</option>
+      <option>Option 2</option>
+      <option>Option 3</option>
+    </select>
+*/
+.select-input--material {
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: none;
+  line-height: normal;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  vertical-align: top;
+  outline: none;
+  line-height: 1;
+  font-family: -apple-system, 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  font-size: 17px;
+  font-family: 'Roboto', 'Noto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  color: $material-select-input-text-color;
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(1px, transparent), color-stop(1px, $material-select-input-inactive-color));
+  background-image: -webkit-linear-gradient(bottom, transparent 1px, $material-select-input-inactive-color 1px);
+  background-image: -moz-linear-gradient(bottom, transparent 1px, $material-select-input-inactive-color 1px);
+  background-image: -o-linear-gradient(bottom, transparent 1px, $material-select-input-inactive-color 1px);
+  background-image: linear-gradient(to top, transparent 1px, $material-select-input-inactive-color 1px);
+  -webkit-background-size: 100% 2px;
+  background-size: 100% 2px;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  background-color: transparent;
+  font-size: 16px;
+  font-weight: 400;
+  border: none;
+  padding-bottom: 2px;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  height: 24px;
+  -webkit-transform: translate3d(0, 0, 0);
+}
+.select-input--material__label {
+  color: $material-select-input-inactive-color;
+  position: absolute;
+  left: 0px;
+  top: 2px;
+  font-size: 16px;
+  font-weight: 400;
+  font-family: 'Roboto', 'Noto', sans-serif;
+  pointer-events: none;
+}
+.select-input--material__label--active {
+  color: $material-select-input-active-color;
+  -webkit-transform: translate(0, -75%) scale(0.75);
+  -moz-transform: translate(0, -75%) scale(0.75);
+  -ms-transform: translate(0, -75%) scale(0.75);
+  -o-transform: translate(0, -75%) scale(0.75);
+  transform: translate(0, -75%) scale(0.75);
+  -webkit-transform-origin: left top;
+  -moz-transform-origin: left top;
+  -ms-transform-origin: left top;
+  -o-transform-origin: left top;
+  transform-origin: left top;
+  -webkit-transition: -webkit-transform 0.1s ease-in, color 0.1s ease-in;
+  -moz-transition: -moz-transform 0.1s ease-in, color 0.1s ease-in;
+  -o-transition: -o-transform 0.1s ease-in, color 0.1s ease-in;
+  transition: transform 0.1s ease-in, color 0.1s ease-in;
+}
+.select-input--material:focus {
+  background-image: -webkit-gradient(linear, left top, left bottom, from($material-select-input-active-color), to($material-select-input-active-color)), -webkit-gradient(linear, left bottom, left top, color-stop(1px, transparent), color-stop(1px, $material-select-input-inactive-color));
+  background-image: -webkit-linear-gradient($material-select-input-active-color, $material-select-input-active-color), -webkit-linear-gradient(bottom, transparent 1px, $material-select-input-inactive-color 1px);
+  background-image: -moz-linear-gradient($material-select-input-active-color, $material-select-input-active-color), -moz-linear-gradient(bottom, transparent 1px, $material-select-input-inactive-color 1px);
+  background-image: -o-linear-gradient($material-select-input-active-color, $material-select-input-active-color), -o-linear-gradient(bottom, transparent 1px, $material-select-input-inactive-color 1px);
+  background-image: linear-gradient($material-select-input-active-color, $material-select-input-active-color), linear-gradient(to top, transparent 1px, $material-select-input-inactive-color 1px);
+  -webkit-animation: material-select-input-animate 0.3s forwards;
+  -moz-animation: material-select-input-animate 0.3s forwards;
+  -o-animation: material-select-input-animate 0.3s forwards;
+  animation: material-select-input-animate 0.3s forwards;
+}
+.select-input--material::-webkit-input-placeholder {
+  color: $material-select-input-inactive-color;
+  line-height: 20px;
+}
+.select-input--material::-moz-placeholder {
+  color: $material-select-input-inactive-color;
+  line-height: 20px;
+}
+.select-input--material::-ms-input-placeholder {
+  color: $material-select-input-inactive-color;
+  line-height: 20px;
+}
+.select-input--material:-ms-input-placeholder {
+  color: $material-select-input-inactive-color;
+  line-height: 20px;
+}
+.select-input--material::-ms-clear {
+  display: none;
+}
+@-moz-keyframes material-select-input-animate {
+  0% {
+    background-size: 0% 2px, 100% 2px;
+  }
+  100% {
+    background-size: 100% 2px, 100% 2px;
+  }
+}
+@-webkit-keyframes material-select-input-animate {
+  0% {
+    -webkit-background-size: 0% 2px, 100% 2px;
+    background-size: 0% 2px, 100% 2px;
+  }
+  100% {
+    -webkit-background-size: 100% 2px, 100% 2px;
+    background-size: 100% 2px, 100% 2px;
+  }
+}
+@-o-keyframes material-select-input-animate {
+  0% {
+    background-size: 0% 2px, 100% 2px;
+  }
+  100% {
+    background-size: 100% 2px, 100% 2px;
+  }
+}
+@keyframes material-select-input-animate {
   0% {
     -webkit-background-size: 0% 2px, 100% 2px;
     background-size: 0% 2px, 100% 2px;
