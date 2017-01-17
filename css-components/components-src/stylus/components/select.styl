@@ -34,8 +34,7 @@ var-material-select-input-inactive-color = $material-select-input-inactive-color
   class: select-input
   modifiers:
     :disabled: Disabled state
-    :focus: Focused
-    :invalid: Hover state
+    :multiple: Multiple elements
   markup:
     <select class="select-input">
       <option>Option 1</option>
@@ -48,7 +47,7 @@ switch()
   reset-input()
   reset-font()
 
-switch--disabled()
+input--disabled()
   disabled()
 
 select-input()
@@ -60,7 +59,7 @@ select-input()
   color var-input-text-color
   padding 0
   margin 0
-  width 100%
+  max-width 50%
   font-size var-select-input-font-size
   height var-select-input-height
   font-weight var-font-weight

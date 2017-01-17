@@ -4912,8 +4912,7 @@ input[type="search"].search-input::-webkit-search-cancel-button {
   class: select-input
   modifiers:
     :disabled: Disabled state
-    :focus: Focused
-    :invalid: Hover state
+    :multiple: Focused
   markup:
     <select class="select-input">
       <option>Option 1</option>
@@ -4951,7 +4950,7 @@ input[type="search"].search-input::-webkit-search-cancel-button {
   color: #1f1f21;
   padding: 0;
   margin: 0;
-  width: 100%;
+  max-width: 50%;
   font-size: 15px;
   height: 31px;
   font-weight: 400;
@@ -5046,7 +5045,7 @@ input[type="search"].search-input::-webkit-search-cancel-button {
   color: #1f1f21;
   padding: 0;
   margin: 0;
-  width: 100%;
+  max-width: 50%;
   font-size: 15px;
   height: 31px;
   font-weight: 400;
