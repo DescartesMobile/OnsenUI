@@ -4908,11 +4908,11 @@ input[type="search"].search-input::-webkit-search-cancel-button {
   }
 }
 /* topdoc
-  name: Select Input
+  name: Select input
   class: select-input
   modifiers:
-    :disabled: Disabled state
-    :multiple: Focused
+    :underbar: display an bar under the select input
+    :material: material design select input
   markup:
     <select class="select-input">
       <option>Option 1</option>
@@ -4944,19 +4944,11 @@ input[type="search"].search-input::-webkit-search-cancel-button {
   border: none;
   background-color: transparent;
   position: relative;
-  letter-spacing: 0;
-  -webkit-box-shadow: var-box-shadow--select-input;
-  box-shadow: var-box-shadow--select-input;
-  color: #1f1f21;
-  padding: 0;
-  margin: 0;
   max-width: 50%;
   font-size: 15px;
   height: 31px;
-  font-weight: 400;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+  border-color: #ccc;
+  color: rgba(24,103,194,0.81);
 }
 .select-input::-webkit-input-placeholder {
   color: #999;
@@ -5005,107 +4997,11 @@ input[type="search"].search-input::-webkit-search-cancel-button {
   background-color: transparent;
   color: #1f1f21;
 }
-/* topdoc
-  name: Underbar Select Input
-  class: select-input--underbar
-  markup:
-    <select class="select-input select-input--underbar">
-      <option>Option 1</option>
-      <option>Option 2</option>
-      <option>Option 3</option>
-    </select>
-*/
-.select-input--underbar {
-  padding: 0;
-  margin: 0;
-  font: inherit;
-  color: inherit;
-  background: transparent;
-  border: none;
-  line-height: normal;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  -webkit-background-clip: padding-box;
-  background-clip: padding-box;
-  vertical-align: top;
-  outline: none;
-  line-height: 1;
-  font-family: -apple-system, 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-weight: 400;
-  font-size: 17px;
-  border: none;
-  background-color: transparent;
-  position: relative;
-  letter-spacing: 0;
-  -webkit-box-shadow: var-box-shadow--select-input;
-  box-shadow: var-box-shadow--select-input;
-  color: #1f1f21;
-  padding: 0;
-  margin: 0;
-  max-width: 50%;
-  font-size: 15px;
-  height: 31px;
-  font-weight: 400;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  border: none;
-  background-color: transparent;
-  border-bottom: 1px solid #ccc;
-  -webkit-border-radius: 0px;
-  border-radius: 0px;
-}
-.select-input--underbar:disabled {
-  opacity: 0.3;
-  cursor: default;
-  pointer-events: none;
-  border: none;
-  background-color: transparent;
-  border: none;
-  background-color: transparent;
-  border-bottom: 1px solid #ccc;
-}
-.select-input--underbar:disabled::-webkit-input-placeholder {
-  border: none;
-  background-color: transparent;
-  color: #999;
-  border: none;
-  background-color: transparent;
-}
-.select-input--underbar:disabled::-moz-placeholder {
-  border: none;
-  background-color: transparent;
-  color: #999;
-  border: none;
-  background-color: transparent;
-}
-.select-input--underbar:disabled::-ms-input-placeholder {
-  border: none;
-  background-color: transparent;
-  color: #999;
-  border: none;
-  background-color: transparent;
-}
-.select-input--underbar:disabled:-ms-input-placeholder {
-  border: none;
-  background-color: transparent;
-  color: #999;
-  border: none;
-  background-color: transparent;
-}
-.select-input--underbar:invalid {
-  border: none;
-  background-color: transparent;
-  color: #1f1f21;
-  border: none;
-  background-color: transparent;
-  border-bottom: 1px solid #ccc;
+.select-input[multiple] {
+  height: 62px;
 }
 /* topdoc
-  name: Material Select Input
+  name: Material select input
   class: select-input--material
   markup:
     <select class="select-input select-input--material">
@@ -5213,6 +5109,97 @@ input[type="search"].search-input::-webkit-search-cancel-button {
 }
 .select-input--material::-ms-clear {
   display: none;
+}
+/* topdoc
+  name: Underbar select input
+  class: select-input--underbar
+  markup:
+    <select class="select-input select-input--underbar">
+      <option>Option 1</option>
+      <option>Option 2</option>
+      <option>Option 3</option>
+    </select>
+*/
+.select-input--underbar {
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: none;
+  line-height: normal;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  vertical-align: top;
+  outline: none;
+  line-height: 1;
+  font-family: -apple-system, 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  font-size: 17px;
+  border: none;
+  background-color: transparent;
+  position: relative;
+  max-width: 50%;
+  font-size: 15px;
+  height: 31px;
+  border-color: #ccc;
+  color: rgba(24,103,194,0.81);
+  border: none;
+  background-color: transparent;
+  border-bottom: 1px solid #ccc;
+  -webkit-border-radius: 0px;
+  border-radius: 0px;
+}
+.select-input--underbar:disabled {
+  opacity: 0.3;
+  cursor: default;
+  pointer-events: none;
+  border: none;
+  background-color: transparent;
+  border: none;
+  background-color: transparent;
+  border-bottom: 1px solid #ccc;
+}
+.select-input--underbar:disabled::-webkit-input-placeholder {
+  border: none;
+  background-color: transparent;
+  color: #999;
+  border: none;
+  background-color: transparent;
+}
+.select-input--underbar:disabled::-moz-placeholder {
+  border: none;
+  background-color: transparent;
+  color: #999;
+  border: none;
+  background-color: transparent;
+}
+.select-input--underbar:disabled::-ms-input-placeholder {
+  border: none;
+  background-color: transparent;
+  color: #999;
+  border: none;
+  background-color: transparent;
+}
+.select-input--underbar:disabled:-ms-input-placeholder {
+  border: none;
+  background-color: transparent;
+  color: #999;
+  border: none;
+  background-color: transparent;
+}
+.select-input--underbar:invalid {
+  border: none;
+  background-color: transparent;
+  color: #1f1f21;
+  border: none;
+  background-color: transparent;
+  border-bottom: 1px solid #ccc;
 }
 @-moz-keyframes material-select-input-animate {
   0% {

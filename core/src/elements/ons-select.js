@@ -31,7 +31,10 @@ const defaultClassName = 'select';
 const INPUT_ATTRIBUTES = [
   'autofocus',
   'disabled',
+  'form',
   'multiple',
+  'name',
+  'required',
   'size'
 ];
 
