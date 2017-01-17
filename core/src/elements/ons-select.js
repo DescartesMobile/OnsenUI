@@ -28,6 +28,13 @@ const scheme = {
 
 const defaultClassName = 'select';
 
+const INPUT_ATTRIBUTES = [
+  'autofocus',
+  'disabled',
+  'multiple',
+  'size'
+];
+
 /**
  * @element ons-select
  * @category form
@@ -83,7 +90,7 @@ export default class SelectElement extends BaseElement {
   }
 
   static get observedAttributes() {
-    return ['modifier', 'class', 'disabled'];
+    return ['modifier', 'class', ...INPUT_ATTRIBUTES];
   }
 
   attributeChangedCallback(name, last, current) {
@@ -96,14 +103,22 @@ export default class SelectElement extends BaseElement {
       case 'modifier':
         ModifierUtil.onModifierChanged(last, current, this, scheme);
         break;
-      case 'disabled':
-        if (this.hasAttribute('disabled')) {
-          this._select.setAttribute('disabled', this.getAttribute('disabled'));
-        }
-        else {
-          this._select.removeAttribute('disabled');
-        }
     }
+
+    if (INPUT_ATTRIBUTES.indexOf(name) >= 0) {
+      contentReady(this, () => this._updateBoundAttributes());
+    }
+  }
+
+  _updateBoundAttributes() {
+    INPUT_ATTRIBUTES.forEach((attr) => {
+      if (this.hasAttribute(attr)) {
+        this._select.setAttribute(attr, this.getAttribute(attr));
+      }
+      else {
+        this._select.removeAttribute(attr);
+      }
+    });
   }
 
   get _select() {
