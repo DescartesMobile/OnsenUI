@@ -86,9 +86,6 @@ export default class SelectElement extends BaseElement {
   init() {
     contentReady(this, () => {
       this._compile();
-      ['checked', 'disabled', 'modifier', 'name', 'input-id'].forEach(e => {
-        this.attributeChangedCallback(e, null, this.getAttribute(e));
-      });
     });
   }
 
@@ -128,34 +125,38 @@ export default class SelectElement extends BaseElement {
     return this.querySelector('select');
   }
 
-  /**
-   * @property disabled
-   * @type {Boolean}
-   * @description
-   *   [en]Whether the select is disabled or not.[/en]
-   *   [ja]無効化されている場合に`true`。[/ja]
-   */
-  set disabled(value) {
-    return util.toggleAttribute(this, 'disabled', value);
-  }
-
-  get disabled() {
-    return this.hasAttribute('disabled');
-  }
-
   _compile() {
     autoStyle.prepare(this);
 
     this.classList.add(defaultClassName);
-
     const sel = document.createElement('select');
     sel.classList.add('select-input');
-
     util.arrayFrom(this.childNodes).forEach(element => sel.appendChild(element));
-
     this.appendChild(sel);
 
     ModifierUtil.initModifier(this, scheme);
+
+    const self = this;
+    ['disabled', 'length', 'multiple', 'name', 'options', 'selectedIndex', 'size', 'value'].forEach(function (key, index, arr) {
+      self.__defineGetter__(key, function () {
+        return self._select[key];
+      });
+      self.__defineSetter__(key, function (value) {
+        self._select[key] = value;
+      });
+    });
+    this.__defineGetter__('form', function () {
+      return self._select['form'];
+    })
+    this.__defineGetter__('type', function () {
+      return self._select['type'];
+    })
+    this.add = function (option, index = null) {
+      self._select.add(option, index);
+    }
+    this.remove = function (index) {
+      self._select.remove(index);
+    }
   }
 }
 
